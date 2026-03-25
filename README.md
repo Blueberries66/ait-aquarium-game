@@ -8,7 +8,7 @@ The content below is an example project proposal / requirements document. Replac
 
 (___TODO__: a brief one or two paragraph, high-level description of your project_)
 
-Aquarium Builder a clicker idle game where players earn currency by clicking a button and spend it to buy fish. Each fish added to a tank increases the amount of currency earned per click. Players can also buy decorations and items to boost currency earned and attract special visitors, which will give currency bonuses or special fish species. Player progress will be saved based on username and password
+Aquarium Builder a clicker idle game where players earn currency by clicking a button and spend it to buy fish. Each fish added to a tank increases the amount of currency earned per click. Players can also buy decorations and items to boost currency earned and attract special visitors, which will give currency bonuses or special fish species. Player progress will be saved based on username and password. Overall I think the logic is fairly simple but making the page look nice will be harder. Might take out decorations and attracting special visitors if it doesn't seem feasible.
 
 
 ## Data Model

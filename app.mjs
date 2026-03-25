@@ -1,19 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 
-dotenv.config();
 
 const app = express();
 app.use(express.json());
 
 // basic route
 app.get("/", (req, res) => {
-  res.send("Aqua Clicker App");
+  res.send("Aquarium app");
 });
 
-// MongoDB connection (can be fake for now)
-mongoose.connect("mongodb://127.0.0.1:27017/aquaclicker", {
+// MongoDB connection
+mongoose.connect("mongodb://127.0.0.1:27017/aquarium", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
