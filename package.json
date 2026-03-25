@@ -1,0 +1,27 @@
+{
+  "name": "final-project-blueberries66",
+  "version": "1.0.0",
+  "description": "Simple clicker based web application where you build an aquarium",
+  "main": "app.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/issues"
+  },
+  "homepage": "https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.3.2"
+  }
+}
