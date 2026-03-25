@@ -1,24 +1,26 @@
-import express from "express";
-import mongoose from "mongoose";
-
+import './config.mjs';
+import './db.mjs';
+import express from 'express';
+import mongoose from 'mongoose';
+import session from 'express-session';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
-app.use(express.json());
 
-// basic route
-app.get("/", (req, res) => {
-  res.send("Aquarium app");
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// MongoDB connection
-mongoose.connect("mongodb://127.0.0.1:27017/aquarium", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.log(err));
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.urlencoded({ extended: false }));
+
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.listen(process.env.PORT ?? 3000);
