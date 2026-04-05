@@ -10,7 +10,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-const MONGODB_URI = process.env.DSN || "mongodb://127.0.0.1:27017/aquarium";
+const MONGODB_URI = process.env.DSN;
 
 mongoose
   .connect(MONGODB_URI)
