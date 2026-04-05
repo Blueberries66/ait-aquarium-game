@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fish Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="bg-sky-50 min-h-screen text-slate-800">
+    <main class="max-w-3xl mx-auto px-6 py-10">
+      <h1 class="text-4xl font-bold text-sky-700 mb-8">Fish Shop</h1>
+
+      <section class="bg-white rounded-2xl shadow-md p-6 mb-6 border border-sky-100">
+        <div class="space-y-2 text-lg">
+          <p>
+            Current coins:
+            <strong class="text-sky-700"><%= tank.coins %></strong>
+          </p>
+          <p>
+            Tank space:
+            <strong><%= tank.fish.length %> / <%= tank.capacity %></strong>
+          </p>
+        </div>
+      </section>
+
+      <% if (errorMessage) { %>
+        <section class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700 shadow-sm">
+          <p><%= errorMessage %></p>
+        </section>
+      <% } %>
+
+      <form
+        action="/shop/buy-fish"
+        method="POST"
+        class="bg-white rounded-2xl shadow-md p-6 border border-sky-100 space-y-5"
+      >
+        <div>
+          <label for="name" class="block text-sm font-medium text-slate-700 mb-2">Fish Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
+          />
+        </div>
+
+        <div>
+          <label for="species" class="block text-sm font-medium text-slate-700 mb-2">Species</label>
+          <input
+            type="text"
+            id="species"
+            name="species"
+            required
+            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
+          />
+        </div>
+
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label for="cost" class="block text-sm font-medium text-slate-700 mb-2">Cost</label>
+            <input
+              type="number"
+              id="cost"
+              name="cost"
+              min="0"
+              required
+              class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
+            />
+          </div>
+
+          <div>
+            <label for="clickBonus" class="block text-sm font-medium text-slate-700 mb-2">Click Bonus</label>
+            <input
+              type="number"
+              id="clickBonus"
+              name="clickBonus"
+              min="0"
+              required
+              class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-sky-600 px-5 py-3 text-white font-semibold shadow hover:bg-sky-700 transition"
+        >
+          Buy Fish
+        </button>
+      </form>
+
+      <nav class="mt-8 flex gap-4">
+        <a
+          href="/"
+          class="inline-block rounded-xl bg-white px-5 py-3 text-sky-700 font-medium border border-sky-200 shadow hover:bg-sky-100 transition"
+        >
+          Home
+        </a>
+        <a
+          href="/inventory"
+          class="inline-block rounded-xl bg-emerald-500 px-5 py-3 text-white font-medium shadow hover:bg-emerald-600 transition"
+        >
+          Inventory
+        </a>
+      </nav>
+    </main>
+  </body>
+</html>
