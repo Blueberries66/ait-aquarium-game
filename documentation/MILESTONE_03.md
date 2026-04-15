@@ -7,7 +7,7 @@ https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries6
 
 URL for form 1 (from previous milestone) 
 ---
-(https://final-project-blueberries66-1.onrender.com/)
+(https://final-project-blueberries66-1.onrender.com/shop)
 
 Special Instructions for Form 1
 ---
@@ -15,15 +15,17 @@ Special Instructions for Form 1
 
 URL for form 2 (for current milestone)
 ---
-(TODO: if applicable, add link to page that shows results of submitting form)
+https://final-project-blueberries66-1.onrender.com/login
 
 Special Instructions for Form 2
 ---
-(TODO: if your app requires special instructions to use or if your app requires authentication, add information here; otherwise, leave blank)
+Register with username and password, at least 6 characters for password 
 
 URL(s) to github repository with commits that show progress on research
 --- 
-(TODO: add link to github url that shows line or lines of code that demonstrate continued progress on research topics)
+https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/blob/main/app.mjs
+
+socket.io and authentication added
 
 References 
 ---
