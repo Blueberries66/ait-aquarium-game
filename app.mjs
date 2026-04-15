@@ -65,7 +65,7 @@ async function seedCatalog() {
       { name: "Clownfish", cost: 50,  clickBonus: 6},
       { name: "Goldfish", cost: 10,  clickBonus: 1},
       { name: "Blue fish idk", cost: 120, clickBonus: 3},
-      { name: "ONe more fish", cost: 5000, clickBonus: 50},
+      { name: "Expensive fish", cost: 5000, clickBonus: 50},
     ]);
     console.log("Fish catalog seeded.");
   }
