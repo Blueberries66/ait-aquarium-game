@@ -2,108 +2,141 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Fish Shop</title>
+    <title>Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="bg-sky-50 min-h-screen text-slate-800">
-    <main class="max-w-3xl mx-auto px-6 py-10">
-      <h1 class="text-4xl font-bold text-sky-700 mb-8">Fish Shop</h1>
+    <main class="max-w-4xl mx-auto px-6 py-10">
 
-      <section class="bg-white rounded-2xl shadow-md p-6 mb-6 border border-sky-100">
-        <div class="space-y-2 text-lg">
-          <p>
-            Current coins:
-            <strong class="text-sky-700"><%= tank.coins %></strong>
-          </p>
-          <p>
-            Tank space:
-            <strong><%= tank.fish.length %> / <%= tank.capacity %></strong>
-          </p>
+      <h1 class="text-4xl font-bold text-sky-700 mb-6">Shop</h1>
+
+      <!-- Tank selector -->
+      <div class="bg-white rounded-2xl shadow p-5 border border-sky-100 mb-8">
+        <label class="block text-sm font-medium text-slate-600 mb-2">Buying for:</label>
+        <div class="flex flex-wrap gap-3">
+          <% tanks.forEach(t => { %>
+            <a href="/shop?tankId=<%= t._id %>"
+              class="rounded-xl px-4 py-2 font-semibold border transition
+                <%= t._id.toString() === tank._id.toString()
+                  ? 'bg-sky-600 text-white border-sky-600'
+                  : 'bg-white text-sky-700 border-sky-200 hover:bg-sky-50' %>">
+              <%= t.name %>
+              (<%= t.fish.length %>/<%= t.capacity %>)
+            </a>
+          <% }) %>
         </div>
-      </section>
+        <p class="mt-3 text-slate-500 text-sm">
+          Coins: <strong class="text-sky-700"><%= coins %></strong>
+          &nbsp;|&nbsp;
+          Space: <strong><%= tank.fish.length %> / <%= tank.capacity %></strong>
+        </p>
+      </div>
 
       <% if (errorMessage) { %>
-        <section class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700 shadow-sm">
-          <p><%= errorMessage %></p>
-        </section>
+        <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
+          <%= errorMessage %>
+        </div>
       <% } %>
 
-      <form
-        action="/shop/buy-fish"
-        method="POST"
-        class="bg-white rounded-2xl shadow-md p-6 border border-sky-100 space-y-5"
-      >
+      <!-- Fish Catalog -->
+      <h2 class="text-2xl font-semibold mb-4">🐠 Fish</h2>
+      <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 mb-10">
+        <% fishCatalog.forEach(fish => { %>
+          <div class="bg-white rounded-2xl shadow p-5 border border-sky-100 flex flex-col gap-3">
+            <div class="h-24 rounded-xl bg-sky-100 flex items-center justify-center text-5xl">
+              <% if (fish.imagePath) { %>
+                <img src="<%= fish.imagePath %>" alt="<%= fish.name %>" class="h-full object-contain p-2" />
+              <% } else { %>
+                🐟
+              <% } %>
+            </div>
+            <div>
+              <p class="font-bold text-lg text-sky-700"><%= fish.name %></p>
+              <p class="text-sm text-slate-400 italic"><%= fish.species %></p>
+              <p class="text-sm mt-1">
+                +<%= fish.clickBonus %>/click &nbsp;·&nbsp;
+                <span class="capitalize font-medium
+                  <%= fish.rarity === 'legendary' ? 'text-yellow-500' :
+                      fish.rarity === 'rare'      ? 'text-purple-500' :
+                                                    'text-slate-400'  %>">
+                  <%= fish.rarity %>
+                </span>
+              </p>
+            </div>
+            <form action="/shop/buy-fish" method="POST" class="mt-auto">
+              <input type="hidden" name="templateId" value="<%= fish._id %>" />
+              <input type="hidden" name="tankId"     value="<%= tank._id %>" />
+              <button type="submit"
+                class="w-full rounded-xl bg-sky-600 py-2 text-white font-semibold hover:bg-sky-700 transition">
+                Buy — <%= fish.cost %> coins
+              </button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Decoration Catalog -->
+      <h2 class="text-2xl font-semibold mb-4">🏰 Decorations</h2>
+      <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 mb-10">
+        <% decorationCatalog.forEach(dec => { %>
+          <div class="bg-white rounded-2xl shadow p-5 border border-emerald-100 flex flex-col gap-3">
+            <div class="h-24 rounded-xl bg-emerald-50 flex items-center justify-center text-5xl">
+              <% if (dec.imagePath) { %>
+                <img src="<%= dec.imagePath %>" alt="<%= dec.name %>" class="h-full object-contain p-2" />
+              <% } else { %>
+                🏰
+              <% } %>
+            </div>
+            <div>
+              <p class="font-bold text-lg text-emerald-700"><%= dec.name %></p>
+              <p class="text-sm text-slate-500">Visitor bonus: +<%= dec.visitorBonus %></p>
+            </div>
+            <form action="/shop/buy-decoration" method="POST" class="mt-auto">
+              <input type="hidden" name="decorationId" value="<%= dec._id %>" />
+              <input type="hidden" name="tankId"       value="<%= tank._id %>" />
+              <button type="submit"
+                class="w-full rounded-xl bg-emerald-600 py-2 text-white font-semibold hover:bg-emerald-700 transition">
+                Buy — <%= dec.cost %> coins
+              </button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- New Tank -->
+      <h2 class="text-2xl font-semibold mb-4">🪣 New Tank</h2>
+      <div class="bg-white rounded-2xl shadow p-5 border border-sky-100 flex flex-col gap-3 max-w-sm mb-10">
+        <div class="h-24 rounded-xl bg-blue-50 flex items-center justify-center text-5xl">
+          🪣
+        </div>
         <div>
-          <label for="name" class="block text-sm font-medium text-slate-700 mb-2">Fish Name</label>
+          <p class="font-bold text-lg text-sky-700">New Tank</p>
+          <p class="text-sm text-slate-500">Capacity: 10 fish</p>
+          <p class="text-sm text-slate-500">Price increases with each tank you own.</p>
+        </div>
+        <form action="/shop/buy-tank" method="POST" class="flex flex-col gap-3">
           <input
             type="text"
-            id="name"
-            name="name"
+            name="tankName"
+            placeholder="Name your tank..."
+            maxlength="30"
             required
-            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
           />
-        </div>
+          <button type="submit"
+            class="w-full rounded-xl bg-sky-600 py-2 text-white font-semibold hover:bg-sky-700 transition">
+            Buy — <%= tankCost %> coins
+          </button>
+        </form>
+      </div>
 
-        <div>
-          <label for="species" class="block text-sm font-medium text-slate-700 mb-2">Species</label>
-          <input
-            type="text"
-            id="species"
-            name="species"
-            required
-            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
-          />
-        </div>
-
-        <div class="grid gap-5 sm:grid-cols-2">
-          <div>
-            <label for="cost" class="block text-sm font-medium text-slate-700 mb-2">Cost</label>
-            <input
-              type="number"
-              id="cost"
-              name="cost"
-              min="0"
-              required
-              class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
-            />
-          </div>
-
-          <div>
-            <label for="clickBonus" class="block text-sm font-medium text-slate-700 mb-2">Click Bonus</label>
-            <input
-              type="number"
-              id="clickBonus"
-              name="clickBonus"
-              min="0"
-              required
-              class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
-            />
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          class="w-full rounded-xl bg-sky-600 px-5 py-3 text-white font-semibold shadow hover:bg-sky-700 transition"
-        >
-          Buy Fish
-        </button>
-      </form>
-
-      <nav class="mt-8 flex gap-4">
-        <a
-          href="/"
-          class="inline-block rounded-xl bg-white px-5 py-3 text-sky-700 font-medium border border-sky-200 shadow hover:bg-sky-100 transition"
-        >
+      <nav class="flex gap-4">
+        <a href="/"
+          class="rounded-xl bg-white px-5 py-3 text-sky-700 border border-sky-200 shadow hover:bg-sky-50 transition">
           Home
         </a>
-        <a
-          href="/inventory"
-          class="inline-block rounded-xl bg-emerald-500 px-5 py-3 text-white font-medium shadow hover:bg-emerald-600 transition"
-        >
-          Inventory
-        </a>
       </nav>
+
     </main>
   </body>
 </html>

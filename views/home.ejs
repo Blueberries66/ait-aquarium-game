@@ -2,45 +2,76 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Aquarium Home</title>
+    <title>Aquarium</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="bg-gradient-to-b from-sky-100 to-cyan-50 min-h-screen text-slate-800">
     <main class="max-w-4xl mx-auto px-6 py-12">
+
       <div class="text-center mb-10">
-        <h1 class="text-5xl font-bold text-sky-700 mb-3">Aquarium</h1>
-        <p class="text-lg text-slate-600">Build your tank, collect fish, and grow your aquarium.</p>
+        <h1 class="text-5xl font-bold text-sky-700 mb-3">🐠 Aquarium</h1>
+        <p class="text-slate-500">Click to earn coins, then spend them on fish and decorations.</p>
       </div>
 
-      <section class="bg-white rounded-3xl shadow-lg p-8 border border-sky-100">
-        <h2 class="text-3xl font-semibold mb-4"><%= tank.name %></h2>
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div class="rounded-2xl bg-sky-50 p-5 border border-sky-100">
-            <p class="text-sm uppercase tracking-wide text-slate-500 mb-1">Coins</p>
-            <p class="text-3xl font-bold text-sky-700"><%= tank.coins %></p>
-          </div>
-          <div class="rounded-2xl bg-emerald-50 p-5 border border-emerald-100">
-            <p class="text-sm uppercase tracking-wide text-slate-500 mb-1">Fish in Tank</p>
-            <p class="text-3xl font-bold text-emerald-600"><%= tank.fish.length %> / <%= tank.capacity %></p>
-          </div>
-        </div>
+      <!-- Coin display + click button -->
+      <section class="bg-white rounded-3xl shadow-lg p-8 border border-sky-100 mb-8 text-center">
+        <p class="text-sm uppercase tracking-wide text-slate-500 mb-1">Coins</p>
+        <p id="coin-display" class="text-5xl font-bold text-sky-700 mb-6"><%= coins %></p>
+
+        <button id="click-btn"
+          class="rounded-3xl bg-emerald-500 px-16 py-6 text-white text-2xl font-bold shadow-xl hover:bg-emerald-600 active:scale-95 transition">
+          🐠 Click to Earn!
+        </button>
+
+        <p class="mt-3 text-slate-400 text-sm">
+          +<span id="bonus-display">
+            <%= tanks.flatMap(t => t.fish).filter(f => f.template).reduce((s, f) => s + f.template.clickBonus, 0) || 1 %>
+          </span> coins per click
+        </p>
       </section>
 
-      <nav class="mt-8 flex flex-col sm:flex-row gap-4">
-        <a
-          href="/shop"
-          class="inline-block rounded-2xl bg-sky-600 px-6 py-4 text-white text-center font-semibold shadow hover:bg-sky-700 transition"
-        >
+      <!-- Tank cards -->
+      <h2 class="text-2xl font-semibold mb-4">Your Tanks</h2>
+      <div class="grid gap-6 sm:grid-cols-2 mb-10">
+        <% tanks.forEach(tank => { %>
+          <a href="/tank/<%= tank._id %>"
+            class="bg-white rounded-2xl shadow-lg p-6 border border-sky-100 hover:shadow-xl hover:-translate-y-1 transition block">
+            <h3 class="text-xl font-bold text-sky-700 mb-3"><%= tank.name %></h3>
+            <p class="text-slate-600">🐟 <strong><%= tank.fish.length %> / <%= tank.capacity %></strong> fish</p>
+            <p class="text-slate-400 text-sm mt-1">Click to view tank →</p>
+          </a>
+        <% }) %>
+      </div>
+
+      <div class="text-center mb-6">
+        <a href="/shop"
+          class="inline-block rounded-2xl bg-sky-600 px-8 py-4 text-white text-lg font-semibold shadow hover:bg-sky-700 transition">
           Go to Shop
         </a>
-        <a
-          href="/inventory"
-          class="inline-block rounded-2xl bg-white px-6 py-4 text-sky-700 text-center font-semibold border border-sky-200 shadow hover:bg-sky-100 transition"
-        >
-          View Inventory
-        </a>
-      </nav>
+      </div>
+
+      <form action="/logout" method="POST" class="text-center">
+        <button type="submit" class="text-sm text-slate-400 hover:text-red-400 transition">
+          Log out
+        </button>
+      </form>
+
     </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const userId = "<%= userId %>";
+
+      socket.on("coins:update", ({ userId: updatedId, coins }) => {
+        if (updatedId === userId) {
+          document.getElementById("coin-display").textContent = coins;
+        }
+      });
+
+      document.getElementById("click-btn").addEventListener("click", () => {
+        socket.emit("click", { userId });
+      });
+    </script>
   </body>
 </html>

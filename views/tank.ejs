@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= tank.name %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gradient-to-b from-sky-100 to-cyan-50 min-h-screen text-slate-800">
+    <main class="max-w-4xl mx-auto px-6 py-12">
+
+      <div class="flex items-center justify-between mb-8">
+        <h1 class="text-4xl font-bold text-sky-700"><%= tank.name %></h1>
+        <a href="/" class="text-sky-600 hover:underline">← Dashboard</a>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid gap-4 sm:grid-cols-2 mb-8">
+        <div class="rounded-2xl bg-white p-5 border border-sky-100 shadow text-center">
+          <p class="text-sm text-slate-500 uppercase tracking-wide mb-1">Fish</p>
+          <p class="text-3xl font-bold text-emerald-600"><%= tank.fish.length %> / <%= tank.capacity %></p>
+        </div>
+        <div class="rounded-2xl bg-white p-5 border border-sky-100 shadow text-center">
+          <p class="text-sm text-slate-500 uppercase tracking-wide mb-1">Bonus / click</p>
+          <p class="text-3xl font-bold text-purple-600">
+            +<%= tank.fish.filter(f => f.template).reduce((s, f) => s + f.template.clickBonus, 0) || 1 %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Fish in tank -->
+      <section class="bg-white rounded-2xl shadow p-6 border border-sky-100 mb-6">
+        <h2 class="text-2xl font-semibold mb-4">Fish</h2>
+        <% if (tank.fish.length === 0) { %>
+          <p class="text-slate-400">No fish yet — visit the shop!</p>
+        <% } else { %>
+          <div class="grid gap-3 sm:grid-cols-3">
+            <% tank.fish.forEach(f => { %>
+              <div class="rounded-xl border border-slate-200 p-4 bg-slate-50 text-center">
+                <div class="text-4xl mb-2">
+                  <% if (f.template && f.template.imagePath) { %>
+                    <img src="<%= f.template.imagePath %>" class="h-12 mx-auto object-contain" />
+                  <% } else { %>
+                    🐟
+                  <% } %>
+                </div>
+                <p class="font-semibold text-sky-700"><%= f.template ? f.template.name : "Unknown" %></p>
+                <p class="text-sm text-slate-500">+<%= f.template ? f.template.clickBonus : 0 %>/click</p>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+
+      <!-- Decorations -->
+      <section class="bg-white rounded-2xl shadow p-6 border border-emerald-100 mb-6">
+        <h2 class="text-2xl font-semibold mb-4">Decorations</h2>
+        <% if (tank.decorations.length === 0) { %>
+          <p class="text-slate-400">No decorations yet.</p>
+        <% } else { %>
+          <div class="flex flex-wrap gap-3">
+            <% tank.decorations.forEach(dec => { %>
+              <span class="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2 text-emerald-700 font-medium">
+                <% if (dec.imagePath) { %>
+                  <img src="<%= dec.imagePath %>" class="h-6 inline mr-1 object-contain" />
+                <% } else { %>
+                  🏰
+                <% } %>
+                <%= dec.name %>
+              </span>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+
+      <nav class="flex gap-4">
+        <a href="/shop"
+          class="rounded-xl bg-sky-600 px-5 py-3 text-white font-medium shadow hover:bg-sky-700 transition">
+          Shop
+        </a>
+        <a href="/"
+          class="rounded-xl bg-white px-5 py-3 text-sky-700 border border-sky-200 shadow hover:bg-sky-50 transition">
+          Dashboard
+        </a>
+      </nav>
+
+    </main>
+  </body>
+</html>

@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
-const UserSchema = new Schema({
-  username: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
-  currency: { type: Number, default: 0 },
-  tanks: [{ type: Schema.Types.ObjectId, ref: 'Tank' }],
-  inventory: [{ type: Schema.Types.ObjectId, ref: 'Item' }]
+const UserSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true, trim: true },
+  passwordHash: { type: String, required: true }
 });
+
+UserSchema.methods.comparePassword = function (candidate) {
+  return bcrypt.compare(candidate, this.passwordHash);
+};
 
 export default mongoose.model("User", UserSchema);
