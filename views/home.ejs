@@ -9,7 +9,7 @@
     <main class="max-w-4xl mx-auto px-6 py-12">
 
       <div class="text-center mb-10">
-        <h1 class="text-5xl font-bold text-sky-700 mb-3">🐠 Aquarium</h1>
+        <h1 class="text-5xl font-bold text-sky-700 mb-3"> Aquarium</h1>
         <p class="text-slate-500">Click to earn coins, then spend them on fish and decorations.</p>
       </div>
 
@@ -20,7 +20,7 @@
 
         <button id="click-btn"
           class="rounded-3xl bg-emerald-500 px-16 py-6 text-white text-2xl font-bold shadow-xl hover:bg-emerald-600 active:scale-95 transition">
-          🐠 Click to Earn!
+          Click to Earn!
         </button>
 
         <p class="mt-3 text-slate-400 text-sm">
@@ -37,7 +37,7 @@
           <a href="/tank/<%= tank._id %>"
             class="bg-white rounded-2xl shadow-lg p-6 border border-sky-100 hover:shadow-xl hover:-translate-y-1 transition block">
             <h3 class="text-xl font-bold text-sky-700 mb-3"><%= tank.name %></h3>
-            <p class="text-slate-600">🐟 <strong><%= tank.fish.length %> / <%= tank.capacity %></strong> fish</p>
+            <p class="text-slate-600"><strong><%= tank.fish.length %> / <%= tank.capacity %></strong> fish</p>
             <p class="text-slate-400 text-sm mt-1">Click to view tank →</p>
           </a>
         <% }) %>

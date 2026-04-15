@@ -39,7 +39,7 @@
       <% } %>
 
       <!-- Fish Catalog -->
-      <h2 class="text-2xl font-semibold mb-4">🐠 Fish</h2>
+      <h2 class="text-2xl font-semibold mb-4">Fish</h2>
       <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 mb-10">
         <% fishCatalog.forEach(fish => { %>
           <div class="bg-white rounded-2xl shadow p-5 border border-sky-100 flex flex-col gap-3">
@@ -47,7 +47,7 @@
               <% if (fish.imagePath) { %>
                 <img src="<%= fish.imagePath %>" alt="<%= fish.name %>" class="h-full object-contain p-2" />
               <% } else { %>
-                🐟
+                [fish]
               <% } %>
             </div>
             <div>
@@ -76,7 +76,7 @@
       </div>
 
       <!-- Decoration Catalog -->
-      <h2 class="text-2xl font-semibold mb-4">🏰 Decorations</h2>
+      <h2 class="text-2xl font-semibold mb-4"> Decorations</h2>
       <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 mb-10">
         <% decorationCatalog.forEach(dec => { %>
           <div class="bg-white rounded-2xl shadow p-5 border border-emerald-100 flex flex-col gap-3">
@@ -84,7 +84,7 @@
               <% if (dec.imagePath) { %>
                 <img src="<%= dec.imagePath %>" alt="<%= dec.name %>" class="h-full object-contain p-2" />
               <% } else { %>
-                🏰
+                [decoration]
               <% } %>
             </div>
             <div>
@@ -104,10 +104,10 @@
       </div>
 
       <!-- New Tank -->
-      <h2 class="text-2xl font-semibold mb-4">🪣 New Tank</h2>
+      <h2 class="text-2xl font-semibold mb-4">New Tank</h2>
       <div class="bg-white rounded-2xl shadow p-5 border border-sky-100 flex flex-col gap-3 max-w-sm mb-10">
         <div class="h-24 rounded-xl bg-blue-50 flex items-center justify-center text-5xl">
-          🪣
+          [tank]
         </div>
         <div>
           <p class="font-bold text-lg text-sky-700">New Tank</p>

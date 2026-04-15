@@ -40,7 +40,7 @@
                   <% if (f.template && f.template.imagePath) { %>
                     <img src="<%= f.template.imagePath %>" class="h-12 mx-auto object-contain" />
                   <% } else { %>
-                    🐟
+                    [fish]
                   <% } %>
                 </div>
                 <p class="font-semibold text-sky-700"><%= f.template ? f.template.name : "Unknown" %></p>
@@ -63,7 +63,7 @@
                 <% if (dec.imagePath) { %>
                   <img src="<%= dec.imagePath %>" class="h-6 inline mr-1 object-contain" />
                 <% } else { %>
-                  🏰
+                  [decoration]
                 <% } %>
                 <%= dec.name %>
               </span>
