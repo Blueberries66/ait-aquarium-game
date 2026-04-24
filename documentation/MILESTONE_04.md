@@ -76,7 +76,7 @@ socket: https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blue
 
 tailwind: https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/tree/main/views
 
-auth: https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/blob/main/views/shop.ejs
+auth: https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/blob/main/app.mjs#L80-L121
 
 Optional project notes 
 --- 
