@@ -4,7 +4,20 @@
     <meta charset="UTF-8" />
     <title><%= tank.name %></title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      .fish {
+        position: absolute;
+        width: 90px;
+        height: auto;
+        user-select: none;
+        pointer-events: none;
+        will-change: transform;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.18));
+      }
+    </style>
   </head>
+
   <body class="bg-gradient-to-b from-sky-100 to-cyan-50 min-h-screen text-slate-800">
     <main class="max-w-4xl mx-auto px-6 py-12">
 
@@ -13,12 +26,14 @@
         <a href="/" class="text-sky-600 hover:underline">← Dashboard</a>
       </div>
 
-      <!-- Stats -->
       <div class="grid gap-4 sm:grid-cols-2 mb-8">
         <div class="rounded-2xl bg-white p-5 border border-sky-100 shadow text-center">
           <p class="text-sm text-slate-500 uppercase tracking-wide mb-1">Fish</p>
-          <p class="text-3xl font-bold text-emerald-600"><%= tank.fish.length %> / <%= tank.capacity %></p>
+          <p class="text-3xl font-bold text-emerald-600">
+            <%= tank.fish.length %> / <%= tank.capacity %>
+          </p>
         </div>
+
         <div class="rounded-2xl bg-white p-5 border border-sky-100 shadow text-center">
           <p class="text-sm text-slate-500 uppercase tracking-wide mb-1">Bonus / click</p>
           <p class="text-3xl font-bold text-purple-600">
@@ -27,62 +42,149 @@
         </div>
       </div>
 
-      <!-- Fish in tank -->
       <section class="bg-white rounded-2xl shadow p-6 border border-sky-100 mb-6">
-        <h2 class="text-2xl font-semibold mb-4">Fish</h2>
+        <h2 class="text-2xl font-semibold mb-4">Aquarium</h2>
+
         <% if (tank.fish.length === 0) { %>
           <p class="text-slate-400">No fish yet — visit the shop!</p>
         <% } else { %>
-          <div class="grid gap-3 sm:grid-cols-3">
+
+          <div
+            id="aquarium"
+            class="relative w-full h-[420px] overflow-hidden rounded-2xl border border-cyan-200 bg-gradient-to-b from-sky-200 via-cyan-300 to-blue-400"
+          >
+            <div class="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_top,white,transparent_45%)]"></div>
+            <div class="absolute bottom-0 left-0 w-full h-16 bg-yellow-100/70"></div>
+
+            <% tank.decorations.forEach((dec, i) => { %>
+              <% if (dec.imagePath) { %>
+                <img
+                  src="<%= dec.imagePath %>"
+                  alt="<%= dec.name %>"
+                  class="absolute bottom-2 object-contain pointer-events-none"
+                  style="left: <%= 40 + (i * 90) %>px; width: 70px;"
+                />
+              <% } %>
+            <% }) %>
+
+            <% tank.fish.forEach((f, i) => { %>
+              <img
+                src="<%= f.template && f.template.imagePath ? f.template.imagePath : '/images/placeholder.png' %>"
+                alt="<%= f.template ? f.template.name : 'Fish' %>"
+                class="fish"
+                data-index="<%= i %>"
+              />
+            <% }) %>
+          </div>
+
+          <div class="mt-4 grid gap-3 sm:grid-cols-3">
             <% tank.fish.forEach(f => { %>
-              <div class="rounded-xl border border-slate-200 p-4 bg-slate-50 text-center">
-                <div class="text-4xl mb-2">
-                  <% if (f.template && f.template.imagePath) { %>
-                    <img src="<%= f.template.imagePath %>" class="h-12 mx-auto object-contain" />
-                  <% } else { %>
-                    [fish]
-                  <% } %>
-                </div>
-                <p class="font-semibold text-sky-700"><%= f.template ? f.template.name : "Unknown" %></p>
-                <p class="text-sm text-slate-500">+<%= f.template ? f.template.clickBonus : 0 %>/click</p>
+              <div class="rounded-xl border border-slate-200 p-3 bg-slate-50 text-center">
+                <p class="font-semibold text-sky-700">
+                  <%= f.template ? f.template.name : "Unknown" %>
+                </p>
+                <p class="text-sm text-slate-500">
+                  +<%= f.template ? f.template.clickBonus : 0 %>/click
+                </p>
               </div>
             <% }) %>
           </div>
-        <% } %>
-      </section>
 
-      <!-- Decorations -->
-      <section class="bg-white rounded-2xl shadow p-6 border border-emerald-100 mb-6">
-        <h2 class="text-2xl font-semibold mb-4">Decorations</h2>
-        <% if (tank.decorations.length === 0) { %>
-          <p class="text-slate-400">No decorations yet.</p>
-        <% } else { %>
-          <div class="flex flex-wrap gap-3">
-            <% tank.decorations.forEach(dec => { %>
-              <span class="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2 text-emerald-700 font-medium">
-                <% if (dec.imagePath) { %>
-                  <img src="<%= dec.imagePath %>" class="h-6 inline mr-1 object-contain" />
-                <% } else { %>
-                  [decoration]
-                <% } %>
-                <%= dec.name %>
-              </span>
-            <% }) %>
-          </div>
         <% } %>
       </section>
 
       <nav class="flex gap-4">
-        <a href="/shop"
-          class="rounded-xl bg-sky-600 px-5 py-3 text-white font-medium shadow hover:bg-sky-700 transition">
+        <a href="/shop" class="rounded-xl bg-sky-600 px-5 py-3 text-white font-medium shadow hover:bg-sky-700 transition">
           Shop
         </a>
-        <a href="/"
-          class="rounded-xl bg-white px-5 py-3 text-sky-700 border border-sky-200 shadow hover:bg-sky-50 transition">
+        <a href="/" class="rounded-xl bg-white px-5 py-3 text-sky-700 border border-sky-200 shadow hover:bg-sky-50 transition">
           Dashboard
         </a>
       </nav>
 
     </main>
+
+    <script>
+      window.addEventListener("load", () => {
+        const aquarium = document.getElementById("aquarium");
+        const fishElements = Array.from(document.querySelectorAll(".fish"));
+
+        if (!aquarium || fishElements.length === 0) return;
+
+        const fishData = fishElements.map((fish, index) => {
+          const rect = aquarium.getBoundingClientRect();
+
+          return {
+            el: fish,
+            x: 40 + (index * 90) % Math.max(100, rect.width - 120),
+            y: 50 + (index * 60) % 250,
+            vx: Math.random() < 0.5 ? -0.7 : 0.7,
+            vy: Math.random() * 0.6 - 0.3,
+            wiggle: Math.random() * Math.PI * 2,
+            size: 80 + Math.random() * 35
+          };
+        });
+
+        fishData.forEach(fish => {
+          fish.el.style.width = `${fish.size}px`;
+        });
+
+        function animate() {
+          const tankWidth = aquarium.clientWidth;
+          const tankHeight = aquarium.clientHeight;
+          const sandHeight = 65;
+
+          fishData.forEach(fish => {
+            const fishWidth = fish.el.offsetWidth || fish.size;
+            const fishHeight = fish.el.offsetHeight || 50;
+
+            fish.wiggle += 0.035;
+
+            fish.x += fish.vx;
+            fish.y += fish.vy + Math.sin(fish.wiggle) * 0.25;
+
+            fish.vx += (Math.random() - 0.5) * 0.015;
+            fish.vy += (Math.random() - 0.5) * 0.012;
+
+            fish.vx = Math.max(-1.2, Math.min(1.2, fish.vx));
+            fish.vy = Math.max(-0.7, Math.min(0.7, fish.vy));
+
+            if (fish.x <= 0) {
+              fish.x = 0;
+              fish.vx = Math.abs(fish.vx);
+            }
+
+            if (fish.x + fishWidth >= tankWidth) {
+              fish.x = tankWidth - fishWidth;
+              fish.vx = -Math.abs(fish.vx);
+            }
+
+            if (fish.y <= 0) {
+              fish.y = 0;
+              fish.vy = Math.abs(fish.vy);
+            }
+
+            if (fish.y + fishHeight >= tankHeight - sandHeight) {
+              fish.y = tankHeight - sandHeight - fishHeight;
+              fish.vy = -Math.abs(fish.vy);
+            }
+
+            const direction = fish.vx >= 0 ? 1 : -1;
+            const bob = Math.sin(fish.wiggle) * 3;
+            const tilt = fish.vy * 8;
+
+            fish.el.style.transform = `
+              translate(${fish.x}px, ${fish.y + bob}px)
+              scaleX(${direction})
+              rotate(${tilt}deg)
+            `;
+          });
+
+          requestAnimationFrame(animate);
+        }
+
+        animate();
+      });
+    </script>
   </body>
 </html>

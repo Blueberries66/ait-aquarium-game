@@ -19,7 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 mongoose.connect(process.env.DSN)
-  .then(() => console.log("Connected to MongoDB"))
+  .then(() => {
+    console.log("Connected to MongoDB");
+    console.log("Database:", mongoose.connection.db.databaseName);
+  })
   .catch((err) => console.error("MongoDB connection error:", err));
 
 
@@ -62,10 +65,10 @@ async function seedCatalog() {
   const fishCount = await FishTemplate.countDocuments();
   if (fishCount === 0) {
     await FishTemplate.insertMany([
-      { name: "Clownfish", cost: 50,  clickBonus: 6},
-      { name: "Goldfish", cost: 10,  clickBonus: 1},
-      { name: "Blue fish idk", cost: 120, clickBonus: 3},
-      { name: "Expensive fish", cost: 5000, clickBonus: 50},
+      { name: "Clownfish", cost: 10,  clickBonus: 2, imagePath: "/images/clownfish.png"},
+      { name: "Goldfish", cost: 50,  clickBonus: 5, imagePath: "/images/goldfish.png"},
+      { name: "Pufferfish", cost: 100, clickBonus: 10, imagePath: "/images/pufferfish.png"},
+      { name: "Rainbowfish", cost: 500, clickBonus: 50, imagePath: "/images/rainbow.png"},
     ]);
     console.log("Fish catalog seeded.");
   }
