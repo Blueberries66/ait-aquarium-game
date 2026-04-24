@@ -19,23 +19,23 @@ URL for deployed site
 
 URL for form 1 (from previous milestone) 
 ---
-(TODO: add link to a functioning form)
+https://final-project-blueberries66-1.onrender.com/
 
 Special Instructions for Form 1
 ---
-(TODO: if your app requires special instructions to use or if your app requires authentication, add information here; otherwise, leave blank)
+user needs to register, passwork needs at least 8 characters
 
 URL for form 2 (for current milestone)
 ---
-(TODO: if applicable, add link to page that shows results of submitting form)
+https://final-project-blueberries66-1.onrender.com/tank/69ead95baa1f286c662b9f87
 
 Special Instructions for Form 2
 ---
-(TODO: if your app requires special instructions to use or if your app requires authentication, add information here; otherwise, leave blank)
+link to tank, not sure if just linking this way works since there's the login/register step
 
 URL for form 3 (from previous milestone) 
 ---
-(TODO: add link to a functioning form)
+https://final-project-blueberries66-1.onrender.com/shop
 
 Special Instructions for Form 3
 ---
@@ -43,27 +43,40 @@ Special Instructions for Form 3
 
 First link to github line number(s) for constructor, HOF, etc.
 ---
-(TODO: add link to line number(s) here) 
+https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/blob/main/models/user.mjs#L9-L11
 
 Second link to github line number(s) for constructor, HOF, etc.
 ---
-(TODO: add link to line number(s) here) 
+https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/blob/main/views/tank.ejs#L117-L186
 
 Short description for links above
 ---
-(TODO: describe what each link above is, one line each... for example: myFunction is a hof that retrieves json from a url, map is used to transform the Array of Person objects into an Array of strings that represents names)
+comparePassword is a method added in the User schema that uses bcrypt to compare a login password with the stored hashed password.
+
+The animation code in tank.ejs uses higher-order functions like map and forEach to create and update fish objects, and apply an animation loop
 
 Link to github line number(s) for schemas (db.js or models folder)
 ---
-(TODO: add link to schemas)
+https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/tree/main/models
 
 Description of research topics above with points
 ---
-(TODO: add description of research topics here, including point values for each, one per line... for example: 2 points - applied and modified "Clean Blog" Bootstrap theme)
+* (4 points) Socket.io for real-time events
+    * Socket.io will be used to handle real-time currency updates on click and to trigger live visitor arrival events without requiring a page refresh
+* (3 points) Tailwind CSS
+    * I will use Tailwind CSS to style the aquarium pages, shop, and collection pages
+* (3 points) Authentication / session management
+    * I will use a library such as express-session and connect-mongo, or another authentication-related library, so that users can log in and keep separate aquarium data
+    * this also helps satisfy privacy/security expectations for user-specific data
+
 
 Links to github line number(s) for research topics described above (one link per line)
 ---
-(TODO: add link to github line number(s), one per line for research topics ... for example, if using auth/passport, link to auth.js or where bulk of auth code is)
+socket: https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/blob/main/app.mjs#L338-L363
+
+tailwind: https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/tree/main/views
+
+auth: https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries66/blob/main/views/shop.ejs
 
 Optional project notes 
 --- 
