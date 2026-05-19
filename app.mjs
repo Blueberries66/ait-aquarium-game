@@ -277,9 +277,9 @@ io.on("connection", (socket) => {
     try {
       if (!userId) return;
       const tanks = await Tank.find({ user: userId }).populate("fish.template");
-      const bonus = tanks.flatMap(t => t.fish)
+      const bonus = 1 + tanks.flatMap(t => t.fish)
         .filter(f => f.template != null)
-        .reduce((sum, f) => sum + f.template.clickBonus, 0) || 1;
+        .reduce((sum, f) => sum + f.template.clickBonus, 0);
 
       await GameState.updateOne({ user: userId }, { $inc: { coins: bonus } });
       const state = await getCoins(userId);

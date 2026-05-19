@@ -4,7 +4,7 @@ Aquarium Builder is a small full-stack clicker game where players build a collec
 
 ## Live Demo
 
-[https://final-project-blueberries66-1.onrender.com/](https://final-project-blueberries66-1.onrender.com/)
+[https://ait-aquarium-game.onrender.com](https://ait-aquarium-game.onrender.com)
 
 The app requires an account. Register with a username and password, then use the dashboard, shop, and tank views from there.
 

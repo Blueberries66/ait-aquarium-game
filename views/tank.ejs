@@ -37,7 +37,7 @@
         <div class="rounded-2xl bg-white p-5 border border-sky-100 shadow text-center">
           <p class="text-sm text-slate-500 uppercase tracking-wide mb-1">Bonus / click</p>
           <p class="text-3xl font-bold text-purple-600">
-            +<%= tank.fish.filter(f => f.template).reduce((s, f) => s + f.template.clickBonus, 0) || 1 %>
+            +<%= 1 + tank.fish.filter(f => f.template).reduce((s, f) => s + f.template.clickBonus, 0) %>
           </p>
         </div>
       </div>
