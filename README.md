@@ -1,141 +1,117 @@
-The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
-
-(___TODO__: your project name_)
-
 # Aquarium Builder
 
-## Overview
+Aquarium Builder is a small full-stack clicker game where players build a collection of fish tanks. Users register or log in, earn coins by clicking, spend coins on fish, and buy additional tanks as their collection grows. Each fish increases the number of coins earned per click, so the game loop gradually scales as the aquarium expands.
 
-(___TODO__: a brief one or two paragraph, high-level description of your project_)
+## Live Demo
 
-Aquarium Builder a clicker idle game where players earn currency by clicking a button and spend it to buy fish. Each fish added to a tank increases the amount of currency earned per click. Players can also buy decorations and items to boost currency earned and attract special visitors, which will give currency bonuses or special fish species. Player progress will be saved based on username and password. Overall I think the logic is fairly simple but making the page look nice will be harder. Might take out decorations and attracting special visitors if it doesn't seem feasible.
+[https://final-project-blueberries66-1.onrender.com/](https://final-project-blueberries66-1.onrender.com/)
 
+The app requires an account. Register with a username and password, then use the dashboard, shop, and tank views from there.
+
+## Features
+
+- User registration and login with hashed passwords
+- Persistent sessions stored in MongoDB
+- Real-time coin updates with Socket.io
+- Fish shop with coin costs and per-click bonuses
+- Multiple tanks per user
+- Tank capacity limits
+- Animated fish display on individual tank pages
+- MongoDB-backed persistence for users, tanks, fish templates, and coin balances
+
+## Tech Stack
+
+- Node.js
+- Express
+- MongoDB and Mongoose
+- EJS templates
+- Socket.io
+- Tailwind CSS via CDN
+- bcrypt
+- express-session and connect-mongo
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- MongoDB connection string
+
+### Installation
+
+```bash
+npm install
+```
+
+Create a `.env` file in the project root:
+
+```env
+DSN=your_mongodb_connection_string
+SESSION_SECRET=your_session_secret
+PORT=3000
+```
+
+Start the app:
+
+```bash
+npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Repository Layout
+
+```text
+.
+|-- app.mjs                    # Express app, routes, Socket.io events, catalog seeding
+|-- config.mjs                 # Environment variable loading
+|-- package.json               # Project metadata, scripts, and dependencies
+|-- models/
+|   |-- fishTemplate.mjs       # Fish catalog schema
+|   |-- gameState.mjs          # Per-user coin balance schema
+|   |-- tank.mjs               # Tank and owned fish schemas
+|   `-- user.mjs               # User schema and password comparison method
+|-- public/
+|   `-- images/                # Fish image assets
+|-- views/
+|   |-- home.ejs               # Dashboard and clicker page
+|   |-- login.ejs              # Login form
+|   |-- register.ejs           # Registration form
+|   |-- shop.ejs               # Fish and tank shop
+|   `-- tank.ejs               # Individual animated tank view
+`-- documentation/             # Milestone notes and screenshots
+```
 
 ## Data Model
 
-(___TODO__: a description of your application's data and their relationships to each other_) 
+The app uses four main MongoDB collections:
 
-The application will store Users, Tanks, Fish, and Items.
+- `User`: stores usernames and bcrypt password hashes.
+- `GameState`: stores the current coin balance for each user.
+- `Tank`: stores each user's tanks, capacity, and owned fish.
+- `FishTemplate`: stores shared fish catalog entries such as name, cost, bonus, and image path.
 
-Users can own multiple tanks (via references)
-Each tank can hold up to 10 fish (via references, enforced in application logic)
-Users can hold items in their inventory (via references)
-Fish and Items are their own documents to allow for shared species/type definitions
+Owned fish are embedded in a tank as references to `FishTemplate` documents, with an acquisition timestamp.
 
-(___TODO__: sample documents_)
+## Main Routes
 
-An Example User:
+- `GET /` - dashboard with coin counter, click button, and tank list
+- `GET /register` and `POST /register` - account creation
+- `GET /login` and `POST /login` - authentication
+- `POST /logout` - end the session
+- `GET /tank/:id` - individual tank display
+- `GET /shop` - fish and tank shop
+- `POST /shop/buy-fish` - purchase a fish for a selected tank
+- `POST /shop/buy-tank` - purchase a new tank
 
-```javascript
-{
-  username: "userA",
-  hash: // a password hash,
-  currency: //number denoting currency amount owned,
-  tanks: // an array of references to Tank documents,
-  inventory: // an array of references to Item documents
-}
-```
+## Screenshots
 
-An Example List with Embedded Items:
+![Login screen](documentation/login.png)
 
-Tank Example:
+![Dashboard](documentation/main.png)
 
-```javascript
-{
-  owner: // a reference to a User object,
-  name: "Tank A",
-  fish: // array of references to Fish documents (max 10),
-  decorations: ["castle", "seaweed"]
-}
-```
+![Tank view](documentation/tank.png)
 
-Fish Example:
+## Notes
 
-```javascript
-{
-  species: "Clownfish",
-  currencyBonus: 3,
-  rarity: "common",
-}
-```
-
-
-## [Link to Commented First Draft Schema](db.js) 
-
-(___TODO__: create a first draft of your Schemas in db.js and link to it_)
-
-[User schema](models/User.mjs)
-[Fish schema](models/Fish.mjs)
-[Tank schema](models/Tank.mjs)
-[Item schema](models/Item.mjs)
-
-## Wireframes
-
-(___TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc._)
-
-/login - landing page with login and register links
-
-![login](documentation/login.png)
-
-/main - shows all owned tanks and current currency
-
-![main](documentation/main.png)
-
-/tank/:id - individual tank view with fish, click button, and fish list
-
-![tank](documentation/tank.png)
-
-
-## Site map
-
-(___TODO__: draw out a site map that shows how pages are related to each other_)
-
-Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia/commons/2/20/Sitemap_google.jpg), but you can create one without the screenshots, drop shadows, etc. ... just names of pages and where they flow to.
-
-/ (login / register)
-├── /register
-├── /login
-├── /main              ← overview with tanks, inventory, shop
-│   └── /tank/:id           ← individual tank
-
-## User Stories or Use Cases
-
-(___TODO__: write out how your application will be used through [user stories](http://en.wikipedia.org/wiki/User_story#Format) and / or [use cases](https://www.mongodb.com/download-center?jmp=docs&_ga=1.47552679.1838903181.1489282706#previous)_)
-
-1. As a non-registered user, I can create an account so that my progress is saved
-2. As a user, I can log in to the site so that I can access my tanks and currency
-3. As a user, I can click a button to earn currency so that I can buy fish and upgrades
-4. As a user, I can view all of my tanks on a dashboard so that I can manage my collection
-5. As a user, I can buy fish from the shop so that I increase my currency earned per click
-6. As a user, I can buy decorations for my tank so that I can attract special visitors
-7. As a user, I can receive special items and rare fish from visitors 
-
-## Research Topics
-
-(___TODO__: the research topics that you're planning on working on along with their point values... and the total points of research topics listed_)
-
-* (3 points) Socket.io for real-time events
-    * Socket.io will be used to handle real-time currency updates on click and to trigger live visitor arrival events without requiring a page refresh
-* (2 points) Tailwind CSS
-    * I will use Tailwind CSS to style the aquarium pages, shop, and collection pages
-* (2 points) Authentication / session management
-    * I will use a library such as express-session and connect-mongo, or another authentication-related library, so that users can log in and keep separate aquarium data
-    * this also helps satisfy privacy/security expectations for user-specific data
-* (3 points) 
-    * anime.js will be used to animate fish swimming around the tank on the /tank/:id page
-
-
-10 points total out of 8 required points (___TODO__: addtional points will __not__ count for extra credit_)
-
-
-## [Link to Initial Main Project File](app.js) 
-
-(___TODO__: create a skeleton Express application with a package.json, app.js, views folder, etc. ... and link to your initial app.js_)
-
-[app.mjs](app.mjs)
-
-## Annotations / References Used
-
-(___TODO__: list any tutorials/references/etc. that you've based your code off of_)
-
-1. based on previous homework asignments
+Fish catalog data is seeded automatically on server start if the fish template collection is empty. User-specific progress is stored in MongoDB, and coin changes are pushed to the browser in real time through Socket.io.

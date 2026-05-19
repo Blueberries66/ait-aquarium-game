@@ -56,17 +56,6 @@
             <div class="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_top,white,transparent_45%)]"></div>
             <div class="absolute bottom-0 left-0 w-full h-16 bg-yellow-100/70"></div>
 
-            <% tank.decorations.forEach((dec, i) => { %>
-              <% if (dec.imagePath) { %>
-                <img
-                  src="<%= dec.imagePath %>"
-                  alt="<%= dec.name %>"
-                  class="absolute bottom-2 object-contain pointer-events-none"
-                  style="left: <%= 40 + (i * 90) %>px; width: 70px;"
-                />
-              <% } %>
-            <% }) %>
-
             <% tank.fish.forEach((f, i) => { %>
               <img
                 src="<%= f.template && f.template.imagePath ? f.template.imagePath : '/images/placeholder.png' %>"

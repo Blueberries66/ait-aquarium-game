@@ -9,8 +9,7 @@ const TankSchema = new mongoose.Schema({
   user:        { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   name:        { type: String, required: true, trim: true },
   capacity:    { type: Number, default: 10, min: 1 },
-  fish:        { type: [OwnedFishSchema], default: [] },
-  decorations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Decoration" }]
+  fish:        { type: [OwnedFishSchema], default: [] }
 });
 
 export default mongoose.model("Tank", TankSchema);

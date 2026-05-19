@@ -62,7 +62,7 @@ https://github.com/nyu-csci-ua-0467-001-002-spring-26/final-project-Blueberries6
 Description of research topics above with points
 ---
 * (4 points) Socket.io for real-time events
-    * Socket.io will be used to handle real-time currency updates on click and to trigger live visitor arrival events without requiring a page refresh
+    * Socket.io will be used to handle real-time currency updates on click without requiring a page refresh
 * (3 points) Tailwind CSS
     * I will use Tailwind CSS to style the aquarium pages, shop, and collection pages
 * (3 points) Authentication / session management

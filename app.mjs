@@ -9,7 +9,6 @@ import { Server } from "socket.io";
 
 import Tank from "./models/tank.mjs";
 import FishTemplate from "./models/fishTemplate.mjs";
-import Decoration from "./models/decoration.mjs";
 import GameState from "./models/gameState.mjs";
 import User from "./models/user.mjs";
 
@@ -49,18 +48,16 @@ async function getCoins(userId) {
 
 async function getOrCreateStarterTank(userId) {
   let tank = await Tank.findOne({ user: userId, name: "Starter Tank" })
-    .populate("fish.template")
-    .populate("decorations");
+    .populate("fish.template");
   if (!tank) {
-    await Tank.create({ user: userId, name: "Starter Tank", capacity: 10, fish: [], decorations: [] });
+    await Tank.create({ user: userId, name: "Starter Tank", capacity: 10, fish: [] });
     tank = await Tank.findOne({ user: userId, name: "Starter Tank" })
-      .populate("fish.template")
-      .populate("decorations");
+      .populate("fish.template");
   }
   return tank;
 }
 
-//seed initial fish and decorations 
+//seed initial fish
 async function seedCatalog() {
   const fishCount = await FishTemplate.countDocuments();
   if (fishCount === 0) {
@@ -71,15 +68,6 @@ async function seedCatalog() {
       { name: "Rainbowfish", cost: 500, clickBonus: 50, imagePath: "/images/rainbow.png"},
     ]);
     console.log("Fish catalog seeded.");
-  }
-  const decCount = await Decoration.countDocuments();
-  if (decCount === 0) {
-    await Decoration.insertMany([
-      { name: "Castle",         cost: 80,  visitorBonus: 1 },
-      { name: "Treasure Chest", cost: 150, visitorBonus: 3 },
-      { name: "Coral Reef",     cost: 200, visitorBonus: 5 },
-    ]);
-    console.log("Decoration catalog seeded.");
   }
 }
 
@@ -167,8 +155,7 @@ app.get("/", requireLogin, async (req, res) => {
 app.get("/tank/:id", requireLogin, async (req, res) => {
   try {
     const tank = await Tank.findOne({ _id: req.params.id, user: req.session.userId })
-      .populate("fish.template")
-      .populate("decorations");
+      .populate("fish.template");
     if (!tank) return res.status(404).send("Tank not found.");
     const state = await getCoins(req.session.userId);
     res.render("tank", { tank, coins: state.coins });
@@ -182,7 +169,6 @@ app.get("/shop", requireLogin, async (req, res) => {
   try {
     const tanks = await Tank.find({ user: req.session.userId }).populate("fish.template");
     const fishCatalog = await FishTemplate.find();
-    const decorationCatalog = await Decoration.find();
     const state = await getCoins(req.session.userId);
     const tankCost = tanks.length * 300;
 
@@ -193,7 +179,6 @@ app.get("/shop", requireLogin, async (req, res) => {
       tanks,
       tank: selectedTank,
       fishCatalog,
-      decorationCatalog,
       errorMessage: "",
       tankCost,
       coins: state.coins
@@ -208,11 +193,10 @@ app.post("/shop/buy-fish", requireLogin, async (req, res) => {
   const renderShopWithError = async (msg) => {
     const tanks = await Tank.find({ user: req.session.userId }).populate("fish.template");
     const fishCatalog = await FishTemplate.find();
-    const decorationCatalog = await Decoration.find();
     const state = await getCoins(req.session.userId);
     const tankCost = tanks.length * 300;
     const selectedTank = tanks.find(t => t._id.toString() === req.body.tankId) || tanks[0];
-    return { tanks, tank: selectedTank, fishCatalog, decorationCatalog, errorMessage: msg, tankCost, coins: state.coins };
+    return { tanks, tank: selectedTank, fishCatalog, errorMessage: msg, tankCost, coins: state.coins };
   };
 
   try {
@@ -245,52 +229,13 @@ app.post("/shop/buy-fish", requireLogin, async (req, res) => {
   }
 });
 
-app.post("/shop/buy-decoration", requireLogin, async (req, res) => {
-  const renderShopWithError = async (msg) => {
-    const tanks = await Tank.find({ user: req.session.userId }).populate("fish.template");
-    const fishCatalog = await FishTemplate.find();
-    const decorationCatalog = await Decoration.find();
-    const state = await getCoins(req.session.userId);
-    const tankCost = tanks.length * 300;
-    const selectedTank = tanks.find(t => t._id.toString() === req.body.tankId) || tanks[0];
-    return { tanks, tank: selectedTank, fishCatalog, decorationCatalog, errorMessage: msg, tankCost, coins: state.coins };
-  };
-
-  try {
-    const { decorationId, tankId } = req.body;
-
-    if (!tankId || !mongoose.Types.ObjectId.isValid(tankId)) {
-      return res.render("shop", await renderShopWithError("Invalid tank."));
-    }
-
-    const tank = await Tank.findOne({ _id: tankId, user: req.session.userId });
-    const decoration = await Decoration.findById(decorationId);
-    const state = await getCoins(req.session.userId);
-
-    if (!tank)       return res.render("shop", await renderShopWithError("Tank not found."));
-    if (!decoration) return res.render("shop", await renderShopWithError("Decoration not found."));
-    if (state.coins < decoration.cost) {
-      return res.render("shop", await renderShopWithError(`Not enough coins to buy ${decoration.name}.`));
-    }
-
-    await GameState.updateOne({ user: req.session.userId }, { $inc: { coins: -decoration.cost } });
-    await Tank.updateOne({ _id: tank._id }, { $push: { decorations: decoration._id } });
-
-    res.redirect(`/tank/${tank._id}`);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error while buying decoration.");
-  }
-});
-
 app.post("/shop/buy-tank", requireLogin, async (req, res) => {
   const renderShopWithError = async (msg) => {
     const tanks = await Tank.find({ user: req.session.userId }).populate("fish.template");
     const fishCatalog = await FishTemplate.find();
-    const decorationCatalog = await Decoration.find();
     const state = await getCoins(req.session.userId);
     const tankCost = tanks.length * 300;
-    return { tanks, tank: tanks[0], fishCatalog, decorationCatalog, errorMessage: msg, tankCost, coins: state.coins };
+    return { tanks, tank: tanks[0], fishCatalog, errorMessage: msg, tankCost, coins: state.coins };
   };
 
   try {
@@ -311,8 +256,7 @@ app.post("/shop/buy-tank", requireLogin, async (req, res) => {
       user: req.session.userId,
       name: tankName.trim().substring(0, 30), // cap at 30 chars
       capacity: 10,
-      fish: [],
-      decorations: []
+      fish: []
     });
 
     res.redirect(`/tank/${newTank._id}`);

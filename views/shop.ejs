@@ -54,7 +54,7 @@
               <p class="font-bold text-lg text-sky-700"><%= fish.name %></p>
               <p class="text-sm text-slate-400 italic"><%= fish.species %></p>
               <p class="text-sm mt-1">
-                +<%= fish.clickBonus %>/click &nbsp;·&nbsp;
+                +<%= fish.clickBonus %>/click &nbsp;-&nbsp;
                 <span class="capitalize font-medium
                   <%= fish.rarity === 'legendary' ? 'text-yellow-500' :
                       fish.rarity === 'rare'      ? 'text-purple-500' :
@@ -68,35 +68,7 @@
               <input type="hidden" name="tankId"     value="<%= tank._id %>" />
               <button type="submit"
                 class="w-full rounded-xl bg-sky-600 py-2 text-white font-semibold hover:bg-sky-700 transition">
-                Buy — <%= fish.cost %> coins
-              </button>
-            </form>
-          </div>
-        <% }) %>
-      </div>
-
-      <!-- Decoration Catalog -->
-      <h2 class="text-2xl font-semibold mb-4"> Decorations</h2>
-      <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 mb-10">
-        <% decorationCatalog.forEach(dec => { %>
-          <div class="bg-white rounded-2xl shadow p-5 border border-emerald-100 flex flex-col gap-3">
-            <div class="h-24 rounded-xl bg-emerald-50 flex items-center justify-center text-5xl">
-              <% if (dec.imagePath) { %>
-                <img src="<%= dec.imagePath %>" alt="<%= dec.name %>" class="h-full object-contain p-2" />
-              <% } else { %>
-                [decoration]
-              <% } %>
-            </div>
-            <div>
-              <p class="font-bold text-lg text-emerald-700"><%= dec.name %></p>
-              <p class="text-sm text-slate-500">Visitor bonus: +<%= dec.visitorBonus %></p>
-            </div>
-            <form action="/shop/buy-decoration" method="POST" class="mt-auto">
-              <input type="hidden" name="decorationId" value="<%= dec._id %>" />
-              <input type="hidden" name="tankId"       value="<%= tank._id %>" />
-              <button type="submit"
-                class="w-full rounded-xl bg-emerald-600 py-2 text-white font-semibold hover:bg-emerald-700 transition">
-                Buy — <%= dec.cost %> coins
+                Buy - <%= fish.cost %> coins
               </button>
             </form>
           </div>
@@ -125,7 +97,7 @@
           />
           <button type="submit"
             class="w-full rounded-xl bg-sky-600 py-2 text-white font-semibold hover:bg-sky-700 transition">
-            Buy — <%= tankCost %> coins
+            Buy - <%= tankCost %> coins
           </button>
         </form>
       </div>
