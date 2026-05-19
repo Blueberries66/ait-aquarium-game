@@ -104,14 +104,6 @@ Owned fish are embedded in a tank as references to `FishTemplate` documents, wit
 - `POST /shop/buy-fish` - purchase a fish for a selected tank
 - `POST /shop/buy-tank` - purchase a new tank
 
-## Screenshots
-
-![Login screen](documentation/login.png)
-
-![Dashboard](documentation/main.png)
-
-![Tank view](documentation/tank.png)
-
 ## Notes
 
 Fish catalog data is seeded automatically on server start if the fish template collection is empty. User-specific progress is stored in MongoDB, and coin changes are pushed to the browser in real time through Socket.io.
